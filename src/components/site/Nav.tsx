@@ -88,102 +88,105 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 px-4 pt-4 transition-transform duration-500 ease-out-soft sm:px-6 sm:pt-5",
-        hidden && !open && "-translate-y-[130%]",
-      )}
-    >
-      {/* announcement ticker */}
-      <div
+    <>
+      <header
         className={cn(
-          "mx-auto mb-2 max-w-[1280px] overflow-hidden px-6 transition-all duration-500 ease-out-soft [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]",
-          solid ? "h-0 opacity-0" : "h-6 opacity-100",
+          "fixed inset-x-0 top-0 z-50 px-4 pt-4 transition-transform duration-500 ease-out-soft sm:px-6 sm:pt-5",
+          hidden && !open && "-translate-y-[130%]",
         )}
       >
-        <div className="flex h-6 w-max animate-[marquee_32s_linear_infinite] items-center text-[0.7rem] font-bold uppercase leading-none tracking-[0.2em] text-cream/80">
-          {[0, 1].map((k) => (
-            <div key={k} aria-hidden={k === 1} className="flex shrink-0">
-              {NEWS.map((n) => (
-                <span key={n} className="flex items-center gap-6 px-6">
-                  {n}
-                  <span aria-hidden className="size-1 rounded-full bg-peach" />
-                </span>
-              ))}
-            </div>
-          ))}
+        {/* announcement ticker */}
+        <div
+          className={cn(
+            "mx-auto mb-2 max-w-[1280px] overflow-hidden px-6 transition-all duration-500 ease-out-soft [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]",
+            solid ? "h-0 opacity-0" : "h-6 opacity-100",
+          )}
+        >
+          <div className="flex h-6 w-max animate-[marquee_32s_linear_infinite] items-center text-[0.7rem] font-bold uppercase leading-none tracking-[0.2em] text-cream/80">
+            {[0, 1].map((k) => (
+              <div key={k} aria-hidden={k === 1} className="flex shrink-0">
+                {NEWS.map((n) => (
+                  <span key={n} className="flex items-center gap-6 px-6">
+                    {n}
+                    <span aria-hidden className="size-1 rounded-full bg-peach" />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <nav
-        aria-label="Main"
-        className={cn(
-          "mx-auto flex max-w-[1280px] items-center justify-between rounded-full p-1.5 transition-all duration-500 ease-out-soft",
-          solid ? "bg-ink/90 shadow-lift ring-1 ring-cream/10" : "bg-ink/20 ring-1 ring-cream/15",
-        )}
-      >
-        <Logo />
+        <nav
+          aria-label="Main"
+          className={cn(
+            "mx-auto flex max-w-[1280px] items-center justify-between rounded-full p-1.5 transition-all duration-500 ease-out-soft",
+            solid ? "bg-ink/90 shadow-lift ring-1 ring-cream/10" : "bg-ink/20 ring-1 ring-cream/15",
+          )}
+        >
+          <Logo />
 
-        <ul className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => {
-            const isActive = section === l.id;
-            return (
-              <li key={l.id}>
-                <Link
-                  href={`/#${l.id}`}
-                  aria-current={isActive ? "true" : undefined}
-                  className={cn(
-                    "relative block rounded-full px-4 py-2.5 text-sm font-medium transition-colors",
-                    isActive ? "text-ink" : "text-cream/80 hover:text-cream",
-                  )}
-                >
-                  {isActive && (
-                    <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-peach" transition={{ type: "spring", bounce: 0.25, duration: 0.5 }} />
-                  )}
-                  <span className="relative">{l.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+          <ul className="hidden items-center gap-1 md:flex">
+            {LINKS.map((l) => {
+              const isActive = section === l.id;
+              return (
+                <li key={l.id}>
+                  <Link
+                    href={`/#${l.id}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={cn(
+                      "relative block rounded-full px-4 py-2.5 text-sm font-medium transition-colors",
+                      isActive ? "text-ink" : "text-cream/80 hover:text-cream",
+                    )}
+                  >
+                    {isActive && (
+                      <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-peach" transition={{ type: "spring", bounce: 0.25, duration: 0.5 }} />
+                    )}
+                    <span className="relative">{l.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/#waitlist"
-            className="group relative hidden h-11 items-center gap-2 overflow-hidden rounded-full bg-cream pl-4 pr-1.5 text-sm font-bold text-ink sm:inline-flex"
-          >
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-danger opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-danger" />
-            </span>
-            Join the Drop
-            <span className="grid size-8 place-items-center rounded-full bg-ink text-cream transition-transform duration-300 ease-out-soft group-hover:rotate-45">
-              <ArrowUpRight aria-hidden className="size-4" />
-            </span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-            aria-expanded={open}
-            className="grid size-11 place-items-center rounded-full bg-cream text-cocoa md:hidden"
-          >
-            <Menu className="size-5" />
-          </button>
-        </div>
-      </nav>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/#waitlist"
+              className="group relative hidden h-11 items-center gap-2 overflow-hidden rounded-full bg-cream pl-4 pr-1.5 text-sm font-bold text-ink sm:inline-flex"
+            >
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-danger opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-danger" />
+              </span>
+              Join the Drop
+              <span className="grid size-8 place-items-center rounded-full bg-ink text-cream transition-transform duration-300 ease-out-soft group-hover:rotate-45">
+                <ArrowUpRight aria-hidden className="size-4" />
+              </span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={open}
+              className="grid size-11 place-items-center rounded-full bg-cream text-cocoa md:hidden"
+            >
+              <Menu className="size-5" />
+            </button>
+          </div>
+        </nav>
 
+      </header>
+
+      {/* Lives outside the header so the header's hide-on-scroll transform never drags it. */}
       <AnimatePresence>
         {open && (
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            initial={{ clipPath: "circle(0% at 92% 6%)" }}
-            animate={{ clipPath: "circle(150% at 92% 6%)" }}
-            exit={{ clipPath: "circle(0% at 92% 6%)" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-50 flex flex-col bg-cocoa p-5 text-cream"
+            initial={{ clipPath: "circle(0% at 92% 6%)", y: 0 }}
+            animate={{ clipPath: "circle(150% at 92% 6%)", y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
+            exit={{ y: "-100%", transition: { duration: 0.55, ease: [0.65, 0, 0.35, 1], delay: 0.12 } }}
+            className="fixed inset-0 z-[60] flex flex-col bg-cocoa p-5 text-cream"
           >
             <div className="flex items-center justify-between">
               <Logo />
@@ -191,7 +194,7 @@ export function Nav() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="grid size-11 place-items-center rounded-full bg-cream text-cocoa"
+                className="grid size-11 place-items-center rounded-full bg-cream text-cocoa transition-transform duration-300 ease-out-soft hover:rotate-90 active:scale-90"
               >
                 <X className="size-5" />
               </button>
@@ -201,8 +204,8 @@ export function Nav() {
                 <motion.li
                   key={l.id}
                   initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  animate={{ opacity: 1, y: 0, transition: { delay: 0.15 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
+                  exit={{ opacity: 0, y: -24, transition: { delay: (LINKS.length - 1 - i) * 0.03, duration: 0.2 } }}
                 >
                   <Link href={`/#${l.id}`} onClick={() => setOpen(false)} className="headline block py-2 text-6xl hover:text-peach">
                     {l.label}
@@ -210,9 +213,25 @@ export function Nav() {
                 </motion.li>
               ))}
             </ul>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.4 } }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              className="mt-auto rounded-lg bg-cream/10 p-5"
+            >
+              <p className="eyebrow text-peach">Next drop</p>
+              <p className="mt-1 font-bold">Friday · 8 PM IST</p>
+              <Link
+                href="/#waitlist"
+                onClick={() => setOpen(false)}
+                className="mt-4 inline-flex h-11 items-center gap-2 rounded-full bg-cream px-5 text-sm font-bold text-ink"
+              >
+                Join the Drop <ArrowUpRight aria-hidden className="size-4" />
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
