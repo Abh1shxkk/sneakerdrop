@@ -17,7 +17,8 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 - **Colourway swatches with a colour flood.** The round thumbnails in the hero come from the database. Picking one recolours the 3D shoe to that product's `accent_hex` and floods the whole hero in that colour with a circular wipe that starts from the swatch you clicked. A rotating "limited edition" stamp, an outlined product-name band, vertical side labels and a price sticker update with it.
 - **Smart header.** An announcement ticker, a drop-shaped logo mark, a sliding highlight that follows the section you're viewing, and a header that hides as you scroll down and returns as you scroll up.
 - **Crossing tape marquee.** Two tilted streetwear-style bands running in opposite directions.
-- **Best sellers spotlight.** A carousel of featured products over giant faded "BEST SELLERS" text, with directional slide and rotate transitions.
+- **Best sellers deck.** Featured pairs in a fanned card deck you can drag or swipe, a giant flipping rank number, a background tinted to each pair's colour, and segmented progress bars that auto-advance and pause on hover.
+- **Back to top.** A floating button with a ring that fills as you scroll, using Lenis smooth scrolling.
 - **Collection grid.** Every product from the database, with animated filter chips by availability, 3D tilt-on-hover cards and staggered reveal on scroll.
 - **"Built different" bento.** Colour-blocked tiles with a feature image, count-up stats and hover micro-interactions.
 - **Product pages** (`/sneakers/[slug]`). Details, availability badge, waitlist copy that changes with stock status, and related products.

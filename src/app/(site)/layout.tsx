@@ -1,3 +1,4 @@
+import { BackToTop } from "@/components/site/BackToTop";
 import { CursorBubble } from "@/components/site/CursorBubble";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
@@ -14,6 +15,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <Nav />
       <main id="main">{children}</main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

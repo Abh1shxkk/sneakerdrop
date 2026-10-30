@@ -90,18 +90,18 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-transform duration-500 ease-out-soft sm:px-5",
+        "fixed inset-x-0 top-0 z-50 px-4 pt-4 transition-transform duration-500 ease-out-soft sm:px-6 sm:pt-5",
         hidden && !open && "-translate-y-[130%]",
       )}
     >
       {/* announcement ticker */}
       <div
         className={cn(
-          "mx-auto mb-2 max-w-[1280px] overflow-hidden transition-all duration-500 ease-out-soft",
+          "mx-auto mb-2 max-w-[1280px] overflow-hidden px-6 transition-all duration-500 ease-out-soft [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]",
           solid ? "h-0 opacity-0" : "h-6 opacity-100",
         )}
       >
-        <div className="flex w-max animate-[marquee_32s_linear_infinite] text-[0.7rem] font-bold uppercase tracking-[0.2em] text-cream/80">
+        <div className="flex h-6 w-max animate-[marquee_32s_linear_infinite] items-center text-[0.7rem] font-bold uppercase leading-none tracking-[0.2em] text-cream/80">
           {[0, 1].map((k) => (
             <div key={k} aria-hidden={k === 1} className="flex shrink-0">
               {NEWS.map((n) => (

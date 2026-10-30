@@ -102,7 +102,6 @@ export function Hero({ products }: { products: Product[] }) {
             .to(q("[data-lead]"), { y: 60, opacity: 0, duration: 0.22 }, 0.04)
             .to(q("[data-info]"), { x: 60, opacity: 0, duration: 0.22 }, 0.04)
             .to(q("[data-badge]"), { scale: 0.6, opacity: 0, duration: 0.2 }, 0.04)
-            .to(q("[data-hint]"), { opacity: 0, duration: 0.08 }, 0)
             .to(q("[data-band]"), { xPercent: -18, duration: 1 }, 0)
             .fromTo(q("[data-callout]"), { opacity: 0, y: 24 }, { opacity: 1, y: 0, stagger: 0.04, duration: 0.12 }, 0.38)
             .to(q("[data-callout]"), { opacity: 0, y: -24, duration: 0.1 }, 0.66)
@@ -268,12 +267,6 @@ export function Hero({ products }: { products: Product[] }) {
           </div>
         )}
 
-        <div data-hint aria-hidden className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex">
-          <span className="eyebrow text-cream/70">Scroll</span>
-          <span className="flex h-9 w-5 justify-center rounded-full border-2 border-cream/50 pt-1.5">
-            <span className="h-2 w-1 animate-bounce rounded-full bg-cream" />
-          </span>
-        </div>
       </div>
     </section>
   );
