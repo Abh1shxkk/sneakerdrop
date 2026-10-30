@@ -14,13 +14,15 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 
 ### Public site
 - **3D scroll hero.** A real sneaker model rendered with three.js / React Three Fiber, pinned with GSAP ScrollTrigger. As you scroll it spins a full 360°, then tilts to a ¾ angle while four feature callouts appear, then flips to a top-down view as the panel colour shifts. It follows the mouse and bobs when idle.
-- **Colourway swatches.** The round thumbnails in the hero come from the database. Picking one blends the 3D shoe to that product's `accent_hex` and shows its name, price and stock status.
+- **Colourway swatches with a colour flood.** The round thumbnails in the hero come from the database. Picking one recolours the 3D shoe to that product's `accent_hex` and floods the whole hero in that colour with a circular wipe that starts from the swatch you clicked. A rotating "limited edition" stamp, an outlined product-name band, vertical side labels and a price sticker update with it.
+- **Smart header.** An announcement ticker, a drop-shaped logo mark, a sliding highlight that follows the section you're viewing, and a header that hides as you scroll down and returns as you scroll up.
+- **Crossing tape marquee.** Two tilted streetwear-style bands running in opposite directions.
 - **Best sellers spotlight.** A carousel of featured products over giant faded "BEST SELLERS" text, with directional slide and rotate transitions.
 - **Collection grid.** Every product from the database, with animated filter chips by availability, 3D tilt-on-hover cards and staggered reveal on scroll.
 - **"Built different" bento.** Colour-blocked tiles with a feature image, count-up stats and hover micro-interactions.
 - **Product pages** (`/sneakers/[slug]`). Details, availability badge, waitlist copy that changes with stock status, and related products.
-- **Waitlist "drop pass".** Pick a pair from visual cards, see a live countdown to the next Friday drop, and sign up. Validated on the client and the server, saved in the database, blocks the same email signing up twice for one product, and includes a honeypot field against bots. Success and "already on the list" states are animated.
-- Smooth scrolling (Lenis), a sticky pill nav, a full-screen animated mobile menu, a marquee strip, a skip link, and `prefers-reduced-motion` support.
+- **Waitlist "drop list" ticket.** A perforated drop-pass ticket tinted in the chosen pair's colour, with a tear-off stub showing a pass number, a live countdown to the next Friday drop and a barcode. Validated on the client and the server, saved in the database, blocks the same email signing up twice for one product, and includes a honeypot field against bots. Success and "already on the list" states are animated.
+- A custom "View" / "Notify" cursor bubble over product cards (desktop), a footer wordmark that runs edge to edge and sits flush on the bottom of the page, smooth scrolling (Lenis), a full-screen animated mobile menu, a marquee strip, a skip link, and `prefers-reduced-motion` support.
 
 ### Admin dashboard (`/admin`)
 - Email and password login (Supabase Auth). Only users listed in the `admins` table get in.

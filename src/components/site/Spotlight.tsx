@@ -47,6 +47,7 @@ export function Spotlight({ products }: { products: Product[] }) {
             >
               <Link
                 href={`/sneakers/${product.slug}`}
+                data-cursor="View"
                 className="group relative block h-full overflow-hidden rounded-lg shadow-lift"
               >
                 <Image

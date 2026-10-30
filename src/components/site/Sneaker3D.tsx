@@ -11,7 +11,9 @@ import * as THREE from "three";
  * so every colourway in the database gets its own shoe while blacks and whites stay intact.
  */
 
+// Swap in any sneaker GLB here. Set RECOLOUR to false for models whose own textures should stay untouched.
 const MODEL_URL = "/models/shoe.glb";
+const RECOLOUR = true;
 const smooth = THREE.MathUtils.smoothstep;
 
 export type ShoePose = { progress: RefObject<number>; pointer: RefObject<{ x: number; y: number }> };
@@ -25,7 +27,7 @@ function useRecolouredShoe(initialAccent: string) {
     const uniforms = { uAccent: { value: new THREE.Color(firstAccent.current) } };
 
     root.traverse((obj) => {
-      if (!(obj instanceof THREE.Mesh)) return;
+      if (!RECOLOUR || !(obj instanceof THREE.Mesh)) return;
       const material = (obj.material as THREE.MeshStandardMaterial).clone();
       material.onBeforeCompile = (shader) => {
         shader.uniforms.uAccent = uniforms.uAccent;
@@ -49,15 +51,19 @@ function useRecolouredShoe(initialAccent: string) {
       obj.material = material;
     });
 
-    // Centre the model and scale it to ~4 world units long.
-    const box = new THREE.Box3().setFromObject(root);
+    // Lay the shoe along X, then centre it and scale it to ~4 world units long.
+    const raw = new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3());
+    if (raw.z > raw.x) root.rotation.y = Math.PI / 2;
+    const fitted = new THREE.Group();
+    fitted.add(root);
+    const box = new THREE.Box3().setFromObject(fitted);
     const size = box.getSize(new THREE.Vector3());
     const centre = box.getCenter(new THREE.Vector3());
     const scale = 4.2 / size.x;
-    root.scale.setScalar(scale);
-    root.position.set(-centre.x * scale, -centre.y * scale, -centre.z * scale);
+    fitted.scale.setScalar(scale);
+    fitted.position.set(-centre.x * scale, -centre.y * scale, -centre.z * scale);
 
-    return { root, uniforms };
+    return { root: fitted, uniforms };
   }, [scene]);
 }
 

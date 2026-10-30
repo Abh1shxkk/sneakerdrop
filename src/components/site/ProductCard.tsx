@@ -32,6 +32,7 @@ export function ProductCard({ product }: { product: Product }) {
       onPointerMove={onMove}
       onPointerLeave={reset}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
+      data-cursor={waitlistFirst ? "Notify" : "View"}
       className="group relative rounded-lg bg-sand p-3 shadow-card transition-shadow duration-500 hover:shadow-lift"
     >
       <div className="relative aspect-square overflow-hidden rounded-md bg-cream">
@@ -62,12 +63,6 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="shrink-0 text-lg font-bold tabular-nums">{formatPrice(product.price_cents)}</p>
       </div>
 
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[calc(50%-2rem)] -translate-x-1/2 translate-y-4 rounded-full bg-cocoa px-5 py-2.5 text-sm font-bold text-cream opacity-0 shadow-lift transition duration-300 ease-out-soft group-hover:translate-y-0 group-hover:opacity-100"
-      >
-        {waitlistFirst ? "Notify me" : "View pair"}
-      </span>
     </motion.article>
   );
 }

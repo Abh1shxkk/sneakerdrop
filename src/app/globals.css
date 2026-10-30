@@ -92,7 +92,7 @@
 }
 
 @utility text-outline {
-  color: transparent;
+  -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1.5px currentColor;
 }
 

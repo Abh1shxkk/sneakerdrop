@@ -34,12 +34,23 @@ export function Footer() {
         <p>Product photos via Unsplash · 3D shoe model © Shopify (CC BY 4.0)</p>
       </div>
 
-      <p
+      {/* Wordmark stretched edge to edge and sitting flush on the bottom of the page. */}
+      <svg
         aria-hidden
-        className="select-none whitespace-nowrap pb-[0.12em] pt-8 text-center font-display text-[clamp(3.5rem,15.5vw,17rem)] font-bold leading-none tracking-[-0.04em] text-cocoa transition-colors duration-500 hover:text-clay"
+        viewBox="0 0 1000 190"
+        className="mt-10 block w-full select-none text-clay transition-colors duration-500 hover:text-peach"
       >
-        sneakerdrop
-      </p>
+        <text
+          x="0"
+          y="146"
+          textLength="1000"
+          lengthAdjust="spacingAndGlyphs"
+          className="fill-current font-display font-bold"
+          style={{ fontSize: 196 }}
+        >
+          sneakerdrop
+        </text>
+      </svg>
     </footer>
   );
 }

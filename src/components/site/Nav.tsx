@@ -1,18 +1,29 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LinkButton } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 
 const LINKS = [
-  { href: "/#collection", label: "Collection" },
-  { href: "/#best-sellers", label: "Best Sellers" },
-  { href: "/#why", label: "Why Us" },
+  { id: "collection", label: "Collection" },
+  { id: "best-sellers", label: "Best Sellers" },
+  { id: "why", label: "Why Us" },
+  { id: "waitlist", label: "Waitlist" },
 ];
+
+const NEWS = ["Next drop · Friday 8 PM IST", "Free shipping across India", "Waitlist members get 24h early access", "30-day no-fuss returns"];
+
+function DropMark() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className="size-5 transition-transform duration-500 ease-out-soft group-hover:rotate-[200deg]">
+      <path d="M12 2.5c3.6 4.3 6.5 8 6.5 11.4a6.5 6.5 0 0 1-13 0C5.5 10.5 8.4 6.8 12 2.5Z" fill="currentColor" />
+      <path d="M9.2 14.6c.4 1.4 1.5 2.3 2.9 2.5" stroke="#f7ede2" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
 
 export function Logo({ className }: { className?: string }) {
   return (
@@ -20,27 +31,54 @@ export function Logo({ className }: { className?: string }) {
       href="/"
       aria-label="SneakerDrop home"
       className={cn(
-        "inline-flex h-11 items-center rounded-full bg-cream px-5 font-display text-xl font-bold tracking-tight text-cocoa transition-transform duration-300 ease-out-soft hover:-rotate-2 hover:scale-105",
+        "group inline-flex h-11 items-center gap-1.5 rounded-full bg-cream px-4 font-display text-xl font-bold tracking-tight text-cocoa transition-transform duration-300 ease-out-soft hover:scale-105",
         className,
       )}
     >
+      <DropMark />
       sneakerdrop
     </Link>
   );
 }
 
-export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const solid = scrolled || pathname !== "/";
+function useScrollState(home: boolean) {
+  const [state, setState] = useState({ scrolled: false, hidden: false, section: "" });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const goingDown = y > lastY + 4;
+      const goingUp = y < lastY - 4;
+      lastY = y;
+
+      let section = "";
+      if (home) {
+        for (const { id } of LINKS) {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top < window.innerHeight * 0.45) section = id;
+        }
+      }
+      setState((s) => ({
+        scrolled: y > 40,
+        hidden: goingDown && y > 400 ? true : goingUp ? false : s.hidden,
+        section,
+      }));
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [home]);
+
+  return state;
+}
+
+export function Nav() {
+  const pathname = usePathname();
+  const home = pathname === "/";
+  const { scrolled, hidden, section } = useScrollState(home);
+  const [open, setOpen] = useState(false);
+  const solid = scrolled || !home;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -50,33 +88,79 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-5">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 px-3 pt-3 transition-transform duration-500 ease-out-soft sm:px-5",
+        hidden && !open && "-translate-y-[130%]",
+      )}
+    >
+      {/* announcement ticker */}
+      <div
+        className={cn(
+          "mx-auto mb-2 max-w-[1280px] overflow-hidden transition-all duration-500 ease-out-soft",
+          solid ? "h-0 opacity-0" : "h-6 opacity-100",
+        )}
+      >
+        <div className="flex w-max animate-[marquee_32s_linear_infinite] text-[0.7rem] font-bold uppercase tracking-[0.2em] text-cream/80">
+          {[0, 1].map((k) => (
+            <div key={k} aria-hidden={k === 1} className="flex shrink-0">
+              {NEWS.map((n) => (
+                <span key={n} className="flex items-center gap-6 px-6">
+                  {n}
+                  <span aria-hidden className="size-1 rounded-full bg-peach" />
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       <nav
         aria-label="Main"
         className={cn(
-          "mx-auto flex max-w-[1280px] items-center justify-between rounded-full py-2 pl-2 pr-2 transition-all duration-500 ease-out-soft sm:pl-3",
-          solid ? "bg-cocoa/95 shadow-lift" : "bg-transparent",
+          "mx-auto flex max-w-[1280px] items-center justify-between rounded-full p-1.5 transition-all duration-500 ease-out-soft",
+          solid ? "bg-ink/90 shadow-lift ring-1 ring-cream/10" : "bg-ink/20 ring-1 ring-cream/15",
         )}
       >
         <Logo />
 
-        <ul className="hidden items-center gap-8 md:flex">
-          {LINKS.map((l) => (
-            <li key={l.href}>
-              <Link
-                href={l.href}
-                className="relative py-2 text-sm font-medium text-cream/85 transition-colors hover:text-cream after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-center after:scale-x-0 after:rounded-full after:bg-peach after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
-                {l.label}
-              </Link>
-            </li>
-          ))}
+        <ul className="hidden items-center gap-1 md:flex">
+          {LINKS.map((l) => {
+            const isActive = section === l.id;
+            return (
+              <li key={l.id}>
+                <Link
+                  href={`/#${l.id}`}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "relative block rounded-full px-4 py-2.5 text-sm font-medium transition-colors",
+                    isActive ? "text-ink" : "text-cream/80 hover:text-cream",
+                  )}
+                >
+                  {isActive && (
+                    <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-peach" transition={{ type: "spring", bounce: 0.25, duration: 0.5 }} />
+                  )}
+                  <span className="relative">{l.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-2">
-          <LinkButton href="/#waitlist" variant="cream" size="sm" className="hidden h-11 px-5 sm:inline-flex">
+          <Link
+            href="/#waitlist"
+            className="group relative hidden h-11 items-center gap-2 overflow-hidden rounded-full bg-cream pl-4 pr-1.5 text-sm font-bold text-ink sm:inline-flex"
+          >
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-danger opacity-75" />
+              <span className="relative inline-flex size-2 rounded-full bg-danger" />
+            </span>
             Join the Drop
-          </LinkButton>
+            <span className="grid size-8 place-items-center rounded-full bg-ink text-cream transition-transform duration-300 ease-out-soft group-hover:rotate-45">
+              <ArrowUpRight aria-hidden className="size-4" />
+            </span>
+          </Link>
           <button
             type="button"
             onClick={() => setOpen(true)}
@@ -113,14 +197,14 @@ export function Nav() {
               </button>
             </div>
             <ul className="mt-16 space-y-2">
-              {[...LINKS, { href: "/#waitlist", label: "Join the Drop" }].map((l, i) => (
+              {LINKS.map((l, i) => (
                 <motion.li
-                  key={l.href}
+                  key={l.id}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <Link href={l.href} onClick={() => setOpen(false)} className="headline block py-2 text-6xl hover:text-peach">
+                  <Link href={`/#${l.id}`} onClick={() => setOpen(false)} className="headline block py-2 text-6xl hover:text-peach">
                     {l.label}
                   </Link>
                 </motion.li>
