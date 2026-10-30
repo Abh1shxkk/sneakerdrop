@@ -6,13 +6,13 @@ import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 
 /**
- * Real sneaker model ("Materials Variants Shoe" © Shopify, CC-BY 4.0), compressed to ~420 KB.
- * A shader swaps the saturated panels of the texture for the product's accent colour,
- * so every colourway in the database gets its own shoe while blacks and whites stay intact.
+ * "Air Jordan 1" by makoto on Sketchfab (CC BY 4.0), compressed from 8 MB to ~1 MB.
+ * A shader repaints the black leather overlays in the product's accent colour while the sail
+ * base and logos stay intact, so every colourway in the database gets its own pair.
  */
 
 // Swap in any sneaker GLB here. Set RECOLOUR to false for models whose own textures should stay untouched.
-const MODEL_URL = "/models/shoe.glb";
+const MODEL_URL = "/models/air-jordan-1.glb";
 const RECOLOUR = true;
 const smooth = THREE.MathUtils.smoothstep;
 
@@ -37,13 +37,11 @@ function useRecolouredShoe(initialAccent: string) {
             "#include <map_fragment>",
             `#ifdef USE_MAP
               vec4 texel = texture2D( map, vMapUv );
-              float hi = max( texel.r, max( texel.g, texel.b ) );
-              float lo = min( texel.r, min( texel.g, texel.b ) );
-              float paint = smoothstep( 0.06, 0.2, hi - lo );
               float lum = dot( texel.rgb, vec3( 0.2126, 0.7152, 0.0722 ) );
-              // 0.22 ≈ average brightness of the painted panels, so the accent lands true and keeps the knit shading.
-              vec3 tinted = clamp( uAccent * clamp( lum / 0.22, 0.45, 1.5 ), 0.0, 1.0 );
-              diffuseColor.rgb *= mix( texel.rgb, tinted, paint );
+              // Near-black leather becomes the accent; the sail base and white logos are left alone.
+              float paint = 1.0 - smoothstep( 0.02, 0.12, lum );
+              vec3 tinted = uAccent * ( 0.82 + lum * 4.0 );
+              diffuseColor.rgb *= mix( texel.rgb, clamp( tinted, 0.0, 1.0 ), paint );
             #endif`,
           );
       };

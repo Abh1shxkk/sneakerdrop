@@ -13,7 +13,7 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 ## Features
 
 ### Public site
-- **3D scroll hero.** A real sneaker model rendered with three.js / React Three Fiber, pinned with GSAP ScrollTrigger. As you scroll it spins a full 360°, then tilts to a ¾ angle while four feature callouts appear, then flips to a top-down view as the panel colour shifts. It follows the mouse and bobs when idle.
+- **3D scroll hero.** A real Air Jordan 1 pair rendered with three.js / React Three Fiber, pinned with GSAP ScrollTrigger. As you scroll it spins a full 360°, then tilts to a ¾ angle while four feature callouts appear, then flips to a top-down view as the panel colour shifts. It follows the mouse and bobs when idle.
 - **Colourway swatches with a colour flood.** The round thumbnails in the hero come from the database. Picking one recolours the 3D shoe to that product's `accent_hex` and floods the whole hero in that colour with a circular wipe that starts from the swatch you clicked. A rotating "limited edition" stamp, an outlined product-name band, vertical side labels and a price sticker update with it.
 - **Smart header.** An announcement ticker, a drop-shaped logo mark, a sliding highlight that follows the section you're viewing, and a header that hides as you scroll down and returns as you scroll up.
 - **Crossing tape marquee.** Two tilted streetwear-style bands running in opposite directions.
@@ -140,7 +140,7 @@ Browser ──► Next.js on Vercel
 3. **The database stops duplicates.** A unique index on `(product_id, lower(email))` blocks repeat signups, even if two requests arrive at the same moment. The action turns Postgres error `23505` into a friendly "you're already on the list".
 4. **Validation at every layer:** Zod on the server (the source of truth), a quick check in the browser for better UX, and `CHECK` constraints in Postgres.
 5. **Fast public pages that stay fresh.** Public reads use a client without cookies, so pages can be cached (`revalidate = 60`). Admin changes call `revalidatePath()`, so updates appear at once.
-6. **One real 3D model, any colourway.** The hero uses a single glTF sneaker, compressed from 7.8 MB to about 420 KB (WebP textures plus meshopt geometry). A small shader patch recolours the saturated panels of its texture to each product's `accent_hex` while keeping the blacks, whites and knit shading. So every product in the database gets its own colourway without shipping extra models. The canvas is loaded with `next/dynamic` (`ssr: false`) and stops rendering when the hero is off-screen.
+6. **One real 3D model, any colourway.** The hero uses a single glTF Air Jordan 1 pair, compressed from 8.1 MB to about 1 MB (WebP textures plus meshopt geometry). A small shader patch repaints the black leather overlays in each product's `accent_hex` while keeping the sail base, logos and leather shading. The result is a Bred, Royal or Volt-style Jordan per product. So every product in the database gets its own colourway without shipping extra models. The canvas is loaded with `next/dynamic` (`ssr: false`) and stops rendering when the hero is off-screen.
 7. **One shared scroll value.** A GSAP ScrollTrigger timeline animates the page elements and also writes its progress into a ref. The R3F `useFrame` loop reads that ref and eases the shoe toward the matching pose, so scroll causes no React re-renders.
 8. **Design system:** colour, radius and shadow tokens live in Tailwind v4 `@theme` (`src/app/globals.css`), with three fonts only: Fredoka, Anton and DM Sans.
 
@@ -172,10 +172,10 @@ supabase/                schema.sql, seed.sql
 ## Known limitations
 - No cart, checkout or payments. This is a showcase, not a shop.
 - Waitlist signups are stored but no emails are sent. A Supabase Edge Function plus an email provider would be the next step.
-- The hero uses one shoe shape for every product. Only the colour changes, not the silhouette.
+- The hero uses one silhouette (Air Jordan 1) for every product. Only the colour changes. SneakerDrop is fictional and not affiliated with Nike or Jordan Brand.
 - Seed photos come from Unsplash and show real-brand sneakers as placeholders. Replace them with your own images through the admin.
 - Single admin role. There are no per-admin permissions or audit log.
 - Waitlist spam protection is a honeypot plus validation only. There is no rate limiting or CAPTCHA.
 
 ## Credits
-Product photography: [Unsplash](https://unsplash.com). 3D model: "Materials Variants Shoe" © 2021 Shopify, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), via the [Khronos glTF Sample Assets](https://github.com/KhronosGroup/glTF-Sample-Assets). Fonts: Google Fonts (Fredoka, Anton, DM Sans). Design references: "Mochi" and "Soleship" concept shots in `docs/references/`.
+Product photography: [Unsplash](https://unsplash.com). 3D model: ["Air Jordan 1"](https://sketchfab.com/3d-models/air-jordan-1-a4b434181fbb48008ad460722fd53725) by [makoto](https://sketchfab.com/lu87813), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and compressed for the web. Air Jordan is a trademark of Nike, Inc. It is used here only as a showcase model for this fictional brand. Fonts: Google Fonts (Fredoka, Anton, DM Sans). Design references: "Mochi" and "Soleship" concept shots in `docs/references/`.

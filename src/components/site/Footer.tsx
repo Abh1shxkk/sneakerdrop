@@ -31,7 +31,13 @@ export function Footer() {
 
       <div className="container-x mt-14 flex flex-col justify-between gap-2 border-t border-cream/15 py-6 text-sm text-cream/60 sm:flex-row">
         <p>© {new Date().getFullYear()} SneakerDrop. All rights reserved.</p>
-        <p>Product photos via Unsplash · 3D shoe model © Shopify (CC BY 4.0)</p>
+        <p>
+          Product photos via Unsplash · 3D model{" "}
+          <a href="https://sketchfab.com/3d-models/air-jordan-1-a4b434181fbb48008ad460722fd53725" className="underline underline-offset-2 hover:text-cream">
+            &ldquo;Air Jordan 1&rdquo; by makoto
+          </a>{" "}
+          (CC BY 4.0)
+        </p>
       </div>
 
       {/* Wordmark stretched edge to edge and sitting flush on the bottom of the page. */}

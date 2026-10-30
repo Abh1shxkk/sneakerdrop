@@ -27,10 +27,10 @@ const ShoeScene = dynamic(() => import("@/components/site/ShoeScene"), {
 });
 
 const CALLOUTS = [
-  { title: "Cloud-Foam Midsole", copy: "Soft landings, springy toe-off.", pos: "left-[6%] top-[24%]", side: "right" },
-  { title: "Breathable Knit", copy: "Engineered airflow zones.", pos: "right-[6%] top-[22%]", side: "left" },
-  { title: "Grip-Lock Outsole", copy: "Wet-street traction.", pos: "left-[8%] bottom-[20%]", side: "right" },
-  { title: "Recycled Laces", copy: "Made from ocean plastic.", pos: "right-[8%] bottom-[22%]", side: "left" },
+  { title: "Full-Grain Leather", copy: "Tumbled overlays that age well.", pos: "left-[6%] top-[24%]", side: "right" },
+  { title: "Padded High Collar", copy: "Locked-in ankle support.", pos: "right-[6%] top-[22%]", side: "left" },
+  { title: "Air-Cushioned Sole", copy: "Encapsulated heel unit.", pos: "left-[8%] bottom-[20%]", side: "right" },
+  { title: "Pivot-Point Outsole", copy: "Cupsole grip for court and street.", pos: "right-[8%] bottom-[22%]", side: "left" },
 ] as const;
 
 export function Hero({ products }: { products: Product[] }) {
