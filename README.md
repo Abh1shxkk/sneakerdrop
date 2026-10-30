@@ -37,6 +37,18 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 
 ---
 
+## Assignment requirements
+
+| Requirement | Where it lives |
+|---|---|
+| Premium landing page with animations and a responsive layout | `src/app/(site)/page.tsx` and `src/components/site/*`: 3D scroll hero, colour flood, draggable deck, colourway panels, ticket waitlist, mobile menu |
+| Dynamic catalogue from a real database (name, image, price, description, availability) | Supabase `products` table, read in `src/lib/queries.ts`. No hardcoded product arrays. 9 seeded pairs. |
+| Protected admin: add, edit and delete sneakers and change availability | `/admin` with Supabase Auth + `admins` table, `src/actions/products.ts`, enforced by RLS. Changes revalidate the public pages. |
+| Waitlist with validation, persistence, duplicate prevention and admin view | `src/actions/waitlist.ts` (Zod + honeypot), `CHECK` constraint, unique `(product_id, lower(email))` index, `/admin/waitlist` with filter and CSV export |
+| No write credentials exposed to the public | Only the public anon key ships. No service-role key. RLS blocks anon writes to products and all reads of the waitlist. |
+
+---
+
 ## Tech stack
 
 | Layer | Tech |
@@ -48,7 +60,7 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 | Motion | GSAP + ScrollTrigger, Lenis, Motion (Framer Motion) |
 | Validation | Zod |
 | UI | lucide-react, sonner |
-| Fonts | Fredoka (display), Anton (headlines), DM Sans (body), via `next/font` |
+| Fonts | Fredoka (display), Anton (headlines), DM Sans (body), self-hosted from `@fontsource` via `next/font/local` so builds never depend on Google Fonts |
 | Hosting | Vercel |
 
 ---
@@ -57,7 +69,7 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 
 ### 1. Clone and install
 ```bash
-git clone <repo-url> sneakerdrop && cd sneakerdrop
+git clone https://github.com/Abh1shxkk/sneakerdrop.git && cd sneakerdrop
 npm install
 ```
 
@@ -165,10 +177,12 @@ supabase/                schema.sql, seed.sql
 
 | | |
 |---|---|
-| ![Hero](docs/screenshots/home.jpg) | ![Callouts](docs/screenshots/hero-callouts.jpg) |
-| ![Collection](docs/screenshots/collection.jpg) | ![Product](docs/screenshots/product.jpg) |
+| ![3D Air Jordan hero](docs/screenshots/home.jpg) | ![Scroll callouts](docs/screenshots/hero-callouts.jpg) |
+| ![Best sellers deck](docs/screenshots/best-sellers.jpg) | ![Collection](docs/screenshots/collection.jpg) |
+| ![Find your colourway](docs/screenshots/colourways.jpg) | ![Built different bento](docs/screenshots/bento.jpg) |
+| ![Waitlist drop list ticket](docs/screenshots/waitlist.jpg) | ![Footer](docs/screenshots/footer.jpg) |
+| ![Product page](docs/screenshots/product.jpg) | ![Mobile](docs/screenshots/mobile.jpg) |
 | ![Admin products](docs/screenshots/admin-products.jpg) | ![Admin waitlist](docs/screenshots/admin-waitlist.jpg) |
-| ![Built different bento](docs/screenshots/bento.jpg) | ![Waitlist drop pass](docs/screenshots/waitlist.jpg) |
 
 ---
 
