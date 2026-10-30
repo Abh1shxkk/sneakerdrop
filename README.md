@@ -163,7 +163,7 @@ supabase/                schema.sql, seed.sql
 | ![Hero](docs/screenshots/home.jpg) | ![Callouts](docs/screenshots/hero-callouts.jpg) |
 | ![Collection](docs/screenshots/collection.jpg) | ![Product](docs/screenshots/product.jpg) |
 | ![Admin products](docs/screenshots/admin-products.jpg) | ![Admin waitlist](docs/screenshots/admin-waitlist.jpg) |
-| ![Mobile](docs/screenshots/mobile.jpg) | |
+| ![Built different bento](docs/screenshots/bento.jpg) | ![Waitlist drop pass](docs/screenshots/waitlist.jpg) |
 
 ---
 
