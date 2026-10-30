@@ -31,9 +31,9 @@ export function ProductCard({ product }: { product: Product }) {
     <motion.article
       onPointerMove={onMove}
       onPointerLeave={reset}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
       data-cursor={waitlistFirst ? "Notify" : "View"}
-      className="group relative rounded-lg bg-sand p-3 shadow-card transition-shadow duration-500 hover:shadow-lift"
+      className="group relative rounded-lg p-3 shadow-card transition-shadow duration-500 hover:shadow-lift"
+      style={{ rotateX, rotateY, transformPerspective: 900, backgroundColor: `color-mix(in oklab, ${product.accent_hex ?? "#E8875C"} 22%, #f7ede2)` }}
     >
       <div className="relative aspect-square overflow-hidden rounded-md bg-cream">
         <Image

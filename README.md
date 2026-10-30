@@ -20,10 +20,12 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 - **Best sellers deck.** Featured pairs in a fanned card deck you can drag or swipe, a giant flipping rank number, a background tinted to each pair's colour, and segmented progress bars that auto-advance and pause on hover.
 - **Back to top.** A floating button with a ring that fills as you scroll, using Lenis smooth scrolling.
 - **Collection grid.** Every product from the database, with animated filter chips by availability, 3D tilt-on-hover cards and staggered reveal on scroll.
+- **"Find your colourway" panels.** Expanding colour panels, one per product in its own accent colour, that open on hover to show the pair. Text colour switches between light and dark automatically for contrast. On mobile they become a stack of colour bars.
 - **"Built different" bento.** Colour-blocked tiles with a feature image, count-up stats and hover micro-interactions.
 - **Product pages** (`/sneakers/[slug]`). Pre-built at deploy so they open instantly. Each page is tinted in the pair's colour, with a gallery of close-up views and a hover magnifier, a details column that stays in view as you scroll, highlight chips, a waitlist card whose copy changes with stock status, expandable shipping, materials and authenticity sections, a "Next pair" banner and related products.
 - **Waitlist "drop list" ticket.** A perforated drop-pass ticket tinted in the chosen pair's colour, with a tear-off stub showing a pass number, a live countdown to the next Friday drop and a barcode. Validated on the client and the server, saved in the database, blocks the same email signing up twice for one product, and includes a honeypot field against bots. Success and "already on the list" states are animated.
-- A custom "View" / "Notify" cursor bubble over product cards (desktop), a footer wordmark that runs edge to edge and sits flush on the bottom of the page, smooth scrolling (Lenis), a full-screen animated mobile menu, a marquee strip, a skip link, and `prefers-reduced-motion` support.
+- **Colourful footer.** A strip made of every product's colour, "Don't miss the next drop" butter and sky cards, a live Mumbai studio clock, colourway chips that link to each pair, and a multicolour wordmark that runs edge to edge and sits flush on the bottom of the page.
+- A custom "View" / "Notify" cursor bubble over product cards (desktop), smooth scrolling (Lenis), a full-screen animated mobile menu, a marquee strip, a skip link, and `prefers-reduced-motion` support.
 
 ### Admin dashboard (`/admin`)
 - Email and password login (Supabase Auth). Only users listed in the `admins` table get in.

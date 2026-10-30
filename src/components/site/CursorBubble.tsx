@@ -19,8 +19,14 @@ export function CursorBubble() {
       const target = (e.target as HTMLElement | null)?.closest<HTMLElement>("[data-cursor]");
       setLabel(target?.dataset.cursor ?? null);
     };
+    // Content moves under a still mouse while scrolling, so hide the bubble until the pointer moves again.
+    const onScroll = () => setLabel(null);
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [x, y]);
 
   return (

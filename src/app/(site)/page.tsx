@@ -1,4 +1,5 @@
 import { Collection } from "@/components/site/Collection";
+import { Colourways } from "@/components/site/Colourways";
 import { Hero } from "@/components/site/Hero";
 import { Marquee } from "@/components/site/Marquee";
 import { Spotlight } from "@/components/site/Spotlight";
@@ -19,6 +20,7 @@ export default async function HomePage() {
       <Marquee />
       <Spotlight products={featured.length > 0 ? featured : products.slice(0, 4)} />
       <Collection products={products} />
+      <Colourways products={products} />
       <WhySection product={products.find((p) => !p.featured && p.availability === "available") ?? products[0]} />
       <WaitlistBand products={products} />
     </>

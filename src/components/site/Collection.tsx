@@ -20,7 +20,7 @@ export function Collection({ products }: { products: Product[] }) {
       <div className="container-x">
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="eyebrow text-clay">The full lineup</p>
+            <p className="eyebrow text-info">The full lineup</p>
             <h2 id="collection-title" className="headline mt-2 text-[clamp(2.5rem,6vw,5rem)]">
               The Collection
             </h2>

@@ -26,7 +26,7 @@ function Band({ words, className, reverse }: { words: string[]; className: strin
 export function Marquee() {
   return (
     <div aria-hidden className="relative h-44 overflow-hidden bg-cream sm:h-52">
-      <Band words={BOTTOM} reverse className="absolute inset-x-[-5%] top-1/2 -translate-y-1/2 rotate-[3deg] bg-ink text-cream" />
+      <Band words={BOTTOM} reverse className="absolute inset-x-[-5%] top-1/2 -translate-y-1/2 rotate-[3deg] bg-forest text-butter" />
       <Band words={TOP} className="absolute inset-x-[-5%] top-1/2 -translate-y-1/2 -rotate-[2.5deg] bg-clay text-cream" />
     </div>
   );

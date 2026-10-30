@@ -13,7 +13,7 @@ export function WhySection({ product }: { product?: Product }) {
       <div className="container-x">
         <Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <p className="eyebrow text-clay">Why SneakerDrop</p>
+            <p className="eyebrow text-forest">Why SneakerDrop</p>
             <h2 id="why-title" className="headline mt-2 text-[clamp(2.75rem,7vw,6rem)]">
               Built <span className="text-clay">different.</span>
             </h2>
@@ -60,13 +60,13 @@ export function WhySection({ product }: { product?: Product }) {
           </div>
 
           {/* Authenticity */}
-          <div className={`${tile} flex flex-col justify-between bg-cocoa text-cream`}>
-            <span className="grid size-12 place-items-center rounded-full bg-cream text-cocoa transition-transform duration-500 group-hover:rotate-12">
+          <div className={`${tile} flex flex-col justify-between bg-sky text-ink`}>
+            <span className="grid size-12 place-items-center rounded-full bg-cream text-info transition-transform duration-500 group-hover:rotate-12">
               <ShieldCheck aria-hidden className="size-6" />
             </span>
             <div>
               <h3 className="text-xl font-bold">100% authentic</h3>
-              <p className="mt-1 text-cream/75">Every pair is checked by hand before it leaves the studio.</p>
+              <p className="mt-1 text-ink/70">Every pair is checked by hand before it leaves the studio.</p>
             </div>
           </div>
 
