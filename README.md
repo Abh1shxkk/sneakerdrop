@@ -4,7 +4,7 @@
 
 SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-driven 3D hero**, a catalogue served from a **real Postgres database (Supabase)**, a **per-product email waitlist**, and a **protected admin dashboard** for managing sneakers and viewing signups.
 
-**Live site:** _add Vercel URL here_ · **Admin:** `/admin`
+**Live site:** https://sneakerdrop-rho.vercel.app · **Admin:** https://sneakerdrop-rho.vercel.app/admin · **Repo:** https://github.com/Abh1shxkk/sneakerdrop
 
 ![Landing page](docs/screenshots/home.jpg)
 
