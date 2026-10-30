@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
-import { Anton, DM_Sans, Fredoka } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const fredoka = Fredoka({
+// Self-hosted from @fontsource so builds never depend on reaching Google Fonts.
+const fredoka = localFont({
   variable: "--font-fredoka",
-  subsets: ["latin"],
-  weight: ["600", "700"],
+  src: [
+    { path: "../../node_modules/@fontsource/fredoka/files/fredoka-latin-600-normal.woff2", weight: "600" },
+    { path: "../../node_modules/@fontsource/fredoka/files/fredoka-latin-700-normal.woff2", weight: "700" },
+  ],
 });
 
-const anton = Anton({
+const anton = localFont({
   variable: "--font-anton",
-  subsets: ["latin"],
+  src: "../../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2",
   weight: "400",
 });
 
-const dmSans = DM_Sans({
+const dmSans = localFont({
   variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  src: [
+    { path: "../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2", weight: "400" },
+    { path: "../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2", weight: "500" },
+    { path: "../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-700-normal.woff2", weight: "700" },
+  ],
 });
 
 export const metadata: Metadata = {
