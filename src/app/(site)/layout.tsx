@@ -1,0 +1,17 @@
+import { Footer } from "@/components/site/Footer";
+import { Nav } from "@/components/site/Nav";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <SmoothScroll />
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream">
+        Skip to content
+      </a>
+      <Nav />
+      <main id="main">{children}</main>
+      <Footer />
+    </>
+  );
+}
