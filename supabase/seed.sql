@@ -30,7 +30,15 @@ values
   ('olive-drift', 'Olive Drift', 'Quiet colour, loud comfort.',
    'A breathable mesh-and-suede runner in muted olive with a bold black logo panel and an energy-return midsole.',
    999900, 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=1200&q=80',
-   'Olive / Black / White', '#6B7046', 'sold_out', false, 7)
+   'Olive / Black / White', '#6B7046', 'sold_out', false, 7),
+  ('bordeaux-skate', 'Bordeaux Skate', 'Old-school, new attitude.',
+   'Heavy canvas, a vulcanised gum-free sole and a cream side stripe. Built to skate, styled to stay out of the bowl.',
+   699900, 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=1200&q=80',
+   'Bordeaux / Cream', '#7A1F2B', 'coming_soon', false, 8),
+  ('shadow-volt', 'Shadow Volt', 'Stealth mode, switched on.',
+   'A blacked-out knit runner with a volt pull tab and a responsive foam stack for night miles.',
+   1199900, 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1200&q=80',
+   'Black / Volt', '#2E2E2E', 'available', false, 9)
 on conflict (slug) do update set
   name = excluded.name, tagline = excluded.tagline, description = excluded.description,
   price_cents = excluded.price_cents, image_url = excluded.image_url, colorway = excluded.colorway,

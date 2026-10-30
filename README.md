@@ -13,13 +13,14 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 ## Features
 
 ### Public site
-- **3D scroll hero.** A sneaker built in code with three.js / React Three Fiber, pinned with GSAP ScrollTrigger. As you scroll it spins a full 360°, then tilts to a ¾ angle while four feature callouts appear, then flips to a top-down view as the panel colour shifts. It follows the mouse and bobs when idle.
+- **3D scroll hero.** A real sneaker model rendered with three.js / React Three Fiber, pinned with GSAP ScrollTrigger. As you scroll it spins a full 360°, then tilts to a ¾ angle while four feature callouts appear, then flips to a top-down view as the panel colour shifts. It follows the mouse and bobs when idle.
 - **Colourway swatches.** The round thumbnails in the hero come from the database. Picking one blends the 3D shoe to that product's `accent_hex` and shows its name, price and stock status.
 - **Best sellers spotlight.** A carousel of featured products over giant faded "BEST SELLERS" text, with directional slide and rotate transitions.
 - **Collection grid.** Every product from the database, with animated filter chips by availability, 3D tilt-on-hover cards and staggered reveal on scroll.
+- **"Built different" bento.** Colour-blocked tiles with a feature image, count-up stats and hover micro-interactions.
 - **Product pages** (`/sneakers/[slug]`). Details, availability badge, waitlist copy that changes with stock status, and related products.
-- **Waitlist.** Validated on the client and the server, saved in the database, blocks the same email signing up twice for one product, and includes a honeypot field against bots. Success and "already on the list" states are animated.
-- Smooth scrolling (Lenis), a glass sticky nav, a full-screen animated mobile menu, a marquee strip, a grain texture, a skip link, and `prefers-reduced-motion` support.
+- **Waitlist "drop pass".** Pick a pair from visual cards, see a live countdown to the next Friday drop, and sign up. Validated on the client and the server, saved in the database, blocks the same email signing up twice for one product, and includes a honeypot field against bots. Success and "already on the list" states are animated.
+- Smooth scrolling (Lenis), a sticky pill nav, a full-screen animated mobile menu, a marquee strip, a skip link, and `prefers-reduced-motion` support.
 
 ### Admin dashboard (`/admin`)
 - Email and password login (Supabase Auth). Only users listed in the `admins` table get in.
@@ -137,7 +138,7 @@ Browser ──► Next.js on Vercel
 3. **The database stops duplicates.** A unique index on `(product_id, lower(email))` blocks repeat signups, even if two requests arrive at the same moment. The action turns Postgres error `23505` into a friendly "you're already on the list".
 4. **Validation at every layer:** Zod on the server (the source of truth), a quick check in the browser for better UX, and `CHECK` constraints in Postgres.
 5. **Fast public pages that stay fresh.** Public reads use a client without cookies, so pages can be cached (`revalidate = 60`). Admin changes call `revalidatePath()`, so updates appear at once.
-6. **A sneaker built in code instead of a downloaded model.** The hero shoe is assembled from shaped three.js geometry (a reshaped sphere for the upper, an extruded side profile for the sole, plus laces, tongue and collar) with per-vertex colour zones. That means no licensing issues, no large download, and the colour changes live for every product in the database. It is loaded with `next/dynamic` (`ssr: false`).
+6. **One real 3D model, any colourway.** The hero uses a single glTF sneaker, compressed from 7.8 MB to about 420 KB (WebP textures plus meshopt geometry). A small shader patch recolours the saturated panels of its texture to each product's `accent_hex` while keeping the blacks, whites and knit shading. So every product in the database gets its own colourway without shipping extra models. The canvas is loaded with `next/dynamic` (`ssr: false`) and stops rendering when the hero is off-screen.
 7. **One shared scroll value.** A GSAP ScrollTrigger timeline animates the page elements and also writes its progress into a ref. The R3F `useFrame` loop reads that ref and eases the shoe toward the matching pose, so scroll causes no React re-renders.
 8. **Design system:** colour, radius and shadow tokens live in Tailwind v4 `@theme` (`src/app/globals.css`), with three fonts only: Fredoka, Anton and DM Sans.
 
@@ -169,10 +170,10 @@ supabase/                schema.sql, seed.sql
 ## Known limitations
 - No cart, checkout or payments. This is a showcase, not a shop.
 - Waitlist signups are stored but no emails are sent. A Supabase Edge Function plus an email provider would be the next step.
-- The 3D shoe is a stylised model built in code, not a scanned product model.
+- The hero uses one shoe shape for every product. Only the colour changes, not the silhouette.
 - Seed photos come from Unsplash and show real-brand sneakers as placeholders. Replace them with your own images through the admin.
 - Single admin role. There are no per-admin permissions or audit log.
 - Waitlist spam protection is a honeypot plus validation only. There is no rate limiting or CAPTCHA.
 
 ## Credits
-Product photography: [Unsplash](https://unsplash.com). Fonts: Google Fonts (Fredoka, Anton, DM Sans). Design references: "Mochi" and "Soleship" concept shots in `docs/references/`.
+Product photography: [Unsplash](https://unsplash.com). 3D model: "Materials Variants Shoe" © 2021 Shopify, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), via the [Khronos glTF Sample Assets](https://github.com/KhronosGroup/glTF-Sample-Assets). Fonts: Google Fonts (Fredoka, Anton, DM Sans). Design references: "Mochi" and "Soleship" concept shots in `docs/references/`.

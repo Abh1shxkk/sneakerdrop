@@ -36,8 +36,18 @@ export function Hero({ products }: { products: Product[] }) {
   const progress = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
   const [active, setActive] = useState(0);
+  const [inView, setInView] = useState(true);
   const product = products[active];
   const accent = product?.accent_hex ?? "#E8875C";
+
+  // Stop rendering WebGL frames once the hero is off-screen.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { rootMargin: "100px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
@@ -93,7 +103,7 @@ export function Hero({ products }: { products: Product[] }) {
     <section ref={root} id="top" aria-label="SneakerDrop hero" className="relative bg-peach p-2 sm:p-3">
       <div
         data-panel
-        className="grain relative h-[calc(100svh-1rem)] min-h-[560px] overflow-hidden rounded-lg bg-cocoa text-cream sm:h-[calc(100svh-1.5rem)]"
+        className="relative h-[calc(100svh-1rem)] min-h-[560px] overflow-hidden rounded-lg bg-cocoa text-cream sm:h-[calc(100svh-1.5rem)]"
       >
         {/* glow */}
         <div
@@ -115,14 +125,14 @@ export function Hero({ products }: { products: Product[] }) {
         </div>
 
         <div className="absolute inset-0 z-10">
-          <ShoeScene accent={accent} progress={progress} pointer={pointer} />
+          <ShoeScene accent={accent} active={inView} progress={progress} pointer={pointer} />
         </div>
 
         {/* feature callouts */}
         <ul className="pointer-events-none absolute inset-0 z-20 hidden md:block">
           {CALLOUTS.map((c) => (
             <li key={c.title} data-callout className={cn("absolute flex items-center gap-3 opacity-0", c.pos, c.side === "left" && "flex-row-reverse text-right")}>
-              <div className="rounded-md border border-cream/20 bg-cream/10 px-4 py-3 backdrop-blur-md">
+              <div className="rounded-md border border-cream/15 bg-maroon/70 px-4 py-3">
                 <p className="font-bold">{c.title}</p>
                 <p className="text-sm text-cream/75">{c.copy}</p>
               </div>
@@ -175,7 +185,7 @@ export function Hero({ products }: { products: Product[] }) {
         {/* bottom-right: active product */}
         {product && (
           <div data-info className="absolute bottom-10 right-10 z-20 hidden w-64 lg:block">
-            <div key={product.id} className="rounded-md border border-cream/20 bg-cream/10 p-5 backdrop-blur-md animate-fade-up">
+            <div key={product.id} className="rounded-md border border-cream/15 bg-maroon/70 p-5 animate-fade-up">
               <AvailabilityBadge availability={product.availability} onDark />
               <p className="headline mt-3 text-3xl">{product.name}</p>
               <p className="text-sm text-cream/75">{product.colorway}</p>

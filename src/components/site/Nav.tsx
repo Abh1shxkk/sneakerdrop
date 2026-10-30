@@ -55,7 +55,7 @@ export function Nav() {
         aria-label="Main"
         className={cn(
           "mx-auto flex max-w-[1280px] items-center justify-between rounded-full py-2 pl-2 pr-2 transition-all duration-500 ease-out-soft sm:pl-3",
-          solid ? "bg-cocoa/85 shadow-lift backdrop-blur-xl" : "bg-transparent",
+          solid ? "bg-cocoa/95 shadow-lift" : "bg-transparent",
         )}
       >
         <Logo />
