@@ -1,18 +1,24 @@
 import "server-only";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
-/** Returns the admin user or null. Never trust middleware alone. */
-export async function getAdmin() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
+export type AdminUser = { id: string; email: string | null };
 
-  const { data } = await supabase.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
-  return data ? user : null;
-}
+/**
+ * Returns the signed-in admin or null. Never trust middleware alone.
+ * getClaims() verifies the session JWT's signature, and cache() makes the layout,
+ * page and actions in one request share a single check.
+ */
+export const getAdmin = cache(async (): Promise<AdminUser | null> => {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getClaims();
+  const claims = data?.claims;
+  if (!claims?.sub) return null;
+
+  const { data: row } = await supabase.from("admins").select("user_id").eq("user_id", claims.sub).maybeSingle();
+  return row ? { id: claims.sub, email: claims.email ?? null } : null;
+});
 
 /** For pages and layouts: redirects non-admins to login. */
 export async function requireAdmin() {

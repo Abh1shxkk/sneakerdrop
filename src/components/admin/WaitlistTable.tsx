@@ -3,7 +3,7 @@
 import { Download, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { deleteWaitlistEntry } from "@/actions/waitlist";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
@@ -20,7 +20,7 @@ function toCsv(entries: WaitlistEntry[]) {
 }
 
 export function WaitlistTable({
-  entries,
+  entries: saved,
   products,
   productId,
 }: {
@@ -30,7 +30,9 @@ export function WaitlistTable({
 }) {
   const router = useRouter();
   const [target, setTarget] = useState<WaitlistEntry | null>(null);
-  const [pending, start] = useTransition();
+  const [, start] = useTransition();
+  const [filtering, startFilter] = useTransition();
+  const [entries, removeOptimistic] = useOptimistic(saved, (list, id: string) => list.filter((e) => e.id !== id));
   const close = useCallback(() => setTarget(null), []);
 
   const exportCsv = () => {
@@ -42,11 +44,13 @@ export function WaitlistTable({
 
   const confirmDelete = () => {
     if (!target) return;
+    const doomed = target;
+    setTarget(null);
     start(async () => {
-      const res = await deleteWaitlistEntry(target.id);
+      removeOptimistic(doomed.id);
+      const res = await deleteWaitlistEntry(doomed.id);
       if (res.ok) toast.success("Entry removed.");
       else toast.error(res.error);
-      setTarget(null);
     });
   };
 
@@ -60,7 +64,10 @@ export function WaitlistTable({
           <select
             id="filter"
             value={productId ?? ""}
-            onChange={(e) => router.push(e.target.value ? `/admin/waitlist?product=${e.target.value}` : "/admin/waitlist")}
+            onChange={(e) => {
+              const next = e.target.value ? `/admin/waitlist?product=${e.target.value}` : "/admin/waitlist";
+              startFilter(() => router.push(next));
+            }}
             className={cn(inputClasses(), "w-60")}
           >
             <option value="">All products</option>
@@ -84,7 +91,7 @@ export function WaitlistTable({
           <p className="mt-1 text-muted">Signups from the site will show up here.</p>
         </div>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg bg-white shadow-card">
+        <div className={cn("mt-6 overflow-x-auto rounded-lg bg-white shadow-card transition-opacity", filtering && "opacity-50")}>
           <table className="w-full min-w-[600px] text-left">
             <thead className="text-xs uppercase tracking-wider text-muted">
               <tr>
@@ -130,7 +137,6 @@ export function WaitlistTable({
         title="Remove from waitlist?"
         body={`${target?.email ?? ""} will no longer be notified about ${target?.product?.name ?? "this drop"}.`}
         confirmLabel="Remove"
-        pending={pending}
         onConfirm={confirmDelete}
         onCancel={close}
       />

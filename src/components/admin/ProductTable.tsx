@@ -3,7 +3,7 @@
 import { Pencil, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { deleteProduct, setAvailability, setFeatured } from "@/actions/products";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
@@ -18,11 +18,14 @@ const SELECT_TONE: Record<Availability, string> = {
   coming_soon: "bg-info/12 text-info",
 };
 
-function Row({ product, count, onDelete }: { product: Product; count: number; onDelete: (p: Product) => void }) {
-  const [pending, start] = useTransition();
+function Row({ product: saved, count, onDelete }: { product: Product; count: number; onDelete: (p: Product) => void }) {
+  const [, start] = useTransition();
+  // Show the change instantly; React rolls it back automatically if the save fails.
+  const [product, patch] = useOptimistic(saved, (current, change: Partial<Product>) => ({ ...current, ...change }));
 
   const changeAvailability = (value: Availability) =>
     start(async () => {
+      patch({ availability: value });
       const res = await setAvailability(product.id, value);
       if (res.ok) toast.success(`${product.name} → ${AVAILABILITY_LABEL[value]}`);
       else toast.error(res.error);
@@ -30,12 +33,13 @@ function Row({ product, count, onDelete }: { product: Product; count: number; on
 
   const toggleFeatured = () =>
     start(async () => {
+      patch({ featured: !product.featured });
       const res = await setFeatured(product.id, !product.featured);
       if (!res.ok) toast.error(res.error);
     });
 
   return (
-    <tr className={cn("border-t border-line transition-opacity", pending && "opacity-60")}>
+    <tr className="border-t border-line">
       <td className="py-3 pl-4 pr-3">
         <div className="flex items-center gap-3">
           <div className="relative size-12 shrink-0 overflow-hidden rounded-sm bg-sand">
@@ -55,7 +59,6 @@ function Row({ product, count, onDelete }: { product: Product; count: number; on
         <select
           id={`avail-${product.id}`}
           value={product.availability}
-          disabled={pending}
           onChange={(e) => changeAvailability(e.target.value as Availability)}
           className={cn("h-9 cursor-pointer rounded-full border-0 px-3 text-sm font-bold outline-none focus-visible:ring-2 focus-visible:ring-clay", SELECT_TONE[product.availability])}
         >
@@ -70,10 +73,9 @@ function Row({ product, count, onDelete }: { product: Product; count: number; on
         <button
           type="button"
           onClick={toggleFeatured}
-          disabled={pending}
           aria-pressed={product.featured}
           aria-label={product.featured ? `Unfeature ${product.name}` : `Feature ${product.name}`}
-          className="grid size-9 place-items-center rounded-full transition hover:bg-sand"
+          className="grid size-9 place-items-center rounded-full transition hover:bg-sand active:scale-90"
         >
           <Star className={cn("size-5", product.featured ? "fill-clay text-clay" : "text-muted")} />
         </button>
@@ -102,18 +104,21 @@ function Row({ product, count, onDelete }: { product: Product; count: number; on
   );
 }
 
-export function ProductTable({ products, counts }: { products: Product[]; counts: Record<string, number> }) {
+export function ProductTable({ products: saved, counts }: { products: Product[]; counts: Record<string, number> }) {
   const [target, setTarget] = useState<Product | null>(null);
-  const [deleting, startDelete] = useTransition();
+  const [, startDelete] = useTransition();
+  const [products, removeOptimistic] = useOptimistic(saved, (list, id: string) => list.filter((p) => p.id !== id));
   const close = useCallback(() => setTarget(null), []);
 
   const confirmDelete = () => {
     if (!target) return;
+    const doomed = target;
+    setTarget(null);
     startDelete(async () => {
-      const res = await deleteProduct(target.id);
-      if (res.ok) toast.success(`${target.name} deleted.`);
+      removeOptimistic(doomed.id);
+      const res = await deleteProduct(doomed.id);
+      if (res.ok) toast.success(`${doomed.name} deleted.`);
       else toast.error(res.error);
-      setTarget(null);
     });
   };
 
@@ -152,7 +157,6 @@ export function ProductTable({ products, counts }: { products: Product[]; counts
         open={Boolean(target)}
         title={`Delete ${target?.name ?? "sneaker"}?`}
         body="This removes it from the site and deletes its waitlist entries. This can't be undone."
-        pending={deleting}
         onConfirm={confirmDelete}
         onCancel={close}
       />

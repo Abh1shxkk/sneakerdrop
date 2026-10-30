@@ -18,9 +18,9 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims() verifies the JWT signature (locally when the project uses asymmetric keys) and refreshes the session.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims?.sub ? data.claims : null;
 
   const { pathname } = request.nextUrl;
   const isAdminArea = pathname.startsWith("/admin") && pathname !== "/admin/login";

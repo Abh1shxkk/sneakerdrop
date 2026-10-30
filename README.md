@@ -32,6 +32,7 @@ SneakerDrop is a showcase for a fictional sneaker brand. It has a **scroll-drive
 - Product **create, edit and delete**, with image upload to Supabase Storage or an Unsplash URL, auto-generated slug, and an accent colour picker.
 - **Availability** and **featured** can be changed straight from the table.
 - **Waitlist view** with a per-product filter, counts, entry removal and **CSV export**.
+- **Instant feedback.** Availability, featured and delete changes show on screen immediately with optimistic updates (`useOptimistic`) and roll back if the save fails. A loading skeleton appears the moment you navigate between admin pages.
 - Stats tiles, toasts, a confirmation modal before deleting, and empty and loading states.
 - Every change refreshes the public pages at once (`revalidatePath`).
 
@@ -151,7 +152,7 @@ Browser ──► Next.js on Vercel
 ```
 
 1. **No service-role key anywhere.** Every admin write runs as the logged-in user, and Postgres RLS (`is_admin()`) decides whether it is allowed. Even if someone took the public anon key, they could not change products or read the waitlist.
-2. **Three layers of admin protection:** the middleware redirect, a `requireAdmin()` / `getAdmin()` check in the admin layout and in *every* server action, and RLS in the database.
+2. **Three layers of admin protection:** the middleware redirect, a `requireAdmin()` / `getAdmin()` check in the admin layout and in *every* server action, and RLS in the database. Sessions are verified with `getClaims()`, which checks the JWT signature, and `getAdmin()` is wrapped in React `cache()` so each request checks only once.
 3. **The database stops duplicates.** A unique index on `(product_id, lower(email))` blocks repeat signups, even if two requests arrive at the same moment. The action turns Postgres error `23505` into a friendly "you're already on the list".
 4. **Validation at every layer:** Zod on the server (the source of truth), a quick check in the browser for better UX, and `CHECK` constraints in Postgres.
 5. **Fast public pages that stay fresh.** Product pages are pre-built at deploy (`generateStaticParams`), queries are de-duplicated with React `cache()`, and server functions run in Mumbai (`bom1`) next to the database. Public reads use a client without cookies, so pages can be cached (`revalidate = 60`). Admin changes call `revalidatePath()`, so updates appear at once.
