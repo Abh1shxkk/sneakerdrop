@@ -14,8 +14,21 @@ export function BackToTop() {
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24 });
   const dashOffset = useTransform(progress, (v) => C * (1 - v));
   const [visible, setVisible] = useState(false);
+  const [lift, setLift] = useState(0);
 
   useEffect(() => scrollYProgress.on("change", (v) => setVisible(v > 0.12)), [scrollYProgress]);
+
+  // Float above the footer wordmark while it is on screen so the button never covers its letters.
+  useEffect(() => {
+    const mark = document.getElementById("footer-wordmark");
+    if (!mark) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setLift(entry.isIntersecting ? Math.ceil(entry.boundingClientRect.height) + 8 : 0),
+      { threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    io.observe(mark);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <AnimatePresence>
@@ -25,12 +38,12 @@ export function BackToTop() {
           onClick={scrollToTop}
           aria-label="Back to top"
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
+          animate={{ opacity: 1, scale: 1, y: -lift }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.92 }}
           transition={{ type: "spring", bounce: 0.35, duration: 0.5 }}
-          className="group fixed bottom-5 right-5 z-40 grid size-16 place-items-center rounded-full bg-ink text-cream shadow-lift sm:bottom-8 sm:right-8"
+          className="group fixed bottom-4 right-4 z-40 grid size-13 place-items-center rounded-full bg-ink text-cream shadow-lift ring-1 ring-cream/20 sm:bottom-8 sm:right-8 sm:size-16"
         >
           <svg viewBox="0 0 64 64" aria-hidden className="absolute inset-0 size-full -rotate-90">
             <circle cx="32" cy="32" r={R} fill="none" stroke="currentColor" strokeOpacity="0.15" strokeWidth="3" />

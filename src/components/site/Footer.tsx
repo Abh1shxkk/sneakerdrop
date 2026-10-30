@@ -146,7 +146,7 @@ export async function Footer() {
       </div>
 
       {/* Multicolour wordmark stretched edge to edge and sitting flush on the bottom of the page. */}
-      <svg aria-hidden viewBox="0 0 1000 190" className="mt-6 block w-full select-none">
+      <svg id="footer-wordmark" aria-hidden viewBox="0 0 1000 190" className="mt-6 block w-full select-none">
         <text x="0" y="146" textLength="1000" lengthAdjust="spacingAndGlyphs" className="font-display font-bold" style={{ fontSize: 196 }}>
           {WORDMARK.map(([letter, colour], i) => (
             <tspan key={i} fill={colour} className="transition-opacity duration-300 hover:opacity-60">
